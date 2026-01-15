@@ -80,13 +80,19 @@ class _MainPage2State extends State<MainPage2> {
                         child: SizedBox(),
                       ),
                       SizedBox(width: screenWidth * 0.04), // Spacing - SAME as mainpage
-                      // Hujjah button (top-right, beige)
+                      // Hujjah button (top-right, beige) - DISABLED: Not available on tafseerliterate.wordpress.com
                       ElevatedButton(
-                        style: buttonStyle,
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/hujjah');
-                        },
-                        child: SizedBox(),
+                        style: buttonStyle.copyWith(
+                          backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.0)),
+                        ),
+                        onPressed: null, // Disabled
+                        child: Center(
+                          // child: Text(
+                          //   'Coming\nSoon',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(color: Colors.white60, fontSize: 12),
+                          // ),
+                        ),
                       ),
                     ],
                   ),
@@ -95,13 +101,19 @@ class _MainPage2State extends State<MainPage2> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Asmaul Husna button (bottom-left, light purple)
+                      // Asmaul Husna button (bottom-left, light purple) - DISABLED: Not available on tafseerliterate.wordpress.com
                       ElevatedButton(
-                        style: buttonStyle,
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/asmaul-husna');
-                        },
-                        child: SizedBox(),
+                        style: buttonStyle.copyWith(
+                          backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.0)),
+                        ),
+                        onPressed: null, // Disabled
+                        child: Center(
+                          // child: Text(
+                          //   'Coming\nSoon',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(color: Colors.white60, fontSize: 12),
+                          // ),
+                        ),
                       ),
                       SizedBox(width: screenWidth * 0.04), // Spacing - SAME as mainpage
                       // Asal Usul Tafsir button (bottom-right, brown)

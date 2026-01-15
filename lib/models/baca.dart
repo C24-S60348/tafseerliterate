@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../services/getlistsurah.dart' as getlist;
 import '../services/baca.dart' as service;
-import '../services/download_service.dart';
 
 /// Remove numbering from unordered list items and clean up nested list structures
 String _removeNumbersFromUnorderedLists(String html) {
@@ -83,6 +82,21 @@ String _getProxiedImageUrl(String imageUrl) {
   }
   // For mobile, use direct URL
   return absoluteUrl;
+}
+
+/// Normalize excessive font sizes in inline styles
+String _normalizeFontSizes(String htmlContent) {
+  // Remove or limit excessive font-size percentages (> 150%)
+  // Replace font-size: XXX% where XXX > 150 with font-size: 150%
+  htmlContent = htmlContent.replaceAllMapped(
+    RegExp(r'font-size:\s*([2-9]\d{2,}|1[6-9]\d|15[1-9])%', caseSensitive: false),
+    (match) => 'font-size: 150%', // Cap at 150%
+  );
+  
+  // Also handle font-size with 'xx-large', 'xxx-large', etc.
+  htmlContent = htmlContent.replaceAll(RegExp(r'font-size:\s*x{2,}-large', caseSensitive: false), 'font-size: large');
+  
+  return htmlContent;
 }
 
 /// Process HTML content to proxy all image URLs for web
@@ -435,12 +449,36 @@ Widget bodyContent(
                   padding: HtmlPaddings.only(bottom: 8),
                   color: isDark ? Colors.white : null,
                 ),
-                "h1": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
-                "h2": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
-                "h3": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
-                "h4": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
-                "h5": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
-                "h6": Style(color: isDark ? Colors.white : null, fontWeight: FontWeight.bold),
+                "h1": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.5), // Limit h1 size
+                ),
+                "h2": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.3), // Limit h2 size
+                ),
+                "h3": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.2), // Limit h3 size to prevent 300% inline styles
+                ),
+                "h4": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.1),
+                ),
+                "h5": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize),
+                ),
+                "h6": Style(
+                  color: isDark ? Colors.white : null,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 0.9),
+                ),
                 "img": Style(
                   width: Width(double.infinity),
                   height: Height(200),
@@ -484,8 +522,10 @@ Future<String?> _getPageContent(int surahIndex, int pageIndex, {String? category
       'entry-content',
     );
     if (content != null) {
-      // Process HTML content to proxy images for web
-      return _processHtmlForWeb(content);
+      // First normalize excessive font sizes
+      String processedContent = _normalizeFontSizes(content);
+      // Then process HTML content to proxy images for web
+      return _processHtmlForWeb(processedContent);
     }
   }
 

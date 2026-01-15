@@ -1,4 +1,4 @@
-package com.af1productions.celiktafsirv3
+package com.af1productions.tafseer_literate
 
 import io.flutter.embedding.android.FlutterActivity
 

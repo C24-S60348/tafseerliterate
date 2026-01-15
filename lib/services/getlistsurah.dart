@@ -145,12 +145,23 @@ class GetListSurah {
           
           if (href == null || text.isEmpty) continue;
           
-          // Extract surah number from href (e.g., surah-001-al-fatihah, surah-6-anam, surah-59-hashr)
-          // Match 1, 2, or 3 digits
-          final hrefMatch = RegExp(r'surah-(\d{1,3})-').firstMatch(href);
-          if (hrefMatch == null) continue;
+          // Extract surah number from href or text
+          // Pattern 1: surah-001-al-fatihah, surah-6-anam, surah-59-hashr (1, 2, or 3 digits)
+          // Pattern 2: text like "Surah 001: Al-Fatihah" or "001. Al-Fatihah"
+          var hrefMatch = RegExp(r'surah-(\d{1,3})-').firstMatch(href);
+          int? surahNumber;
           
-          int surahNumber = int.parse(hrefMatch.group(1)!);
+          if (hrefMatch != null) {
+            surahNumber = int.parse(hrefMatch.group(1)!);
+          } else {
+            // Try to extract from link text (e.g., "Surah 001: Al-Fatihah" or "001. Al-Fatihah")
+            final textMatch = RegExp(r'(?:surah\s+)?(\d{1,3})[:\.]?\s*', caseSensitive: false).firstMatch(text);
+            if (textMatch != null) {
+              surahNumber = int.parse(textMatch.group(1)!);
+            }
+          }
+          
+          if (surahNumber == null) continue;
           
           // Fix for website error: surah-015-hashr should be surah 59 (Al-Hashr), not 15 (Al-Hijr)
           if (surahNumber == 15 && href.toLowerCase().contains('hashr')) {
@@ -331,94 +342,99 @@ class GetListSurah {
     return RegExp(r'^\d+$').hasMatch(str);
   }
 
-  /// Scrape all post URLs and titles from a surah category page
+  /// Scrape all page links from entry-content div (simpler approach)
   static Future<List<Map<String, String>>> _scrapeSurahUrls(String categoryUrl) async {
     final List<Map<String, String>> urlTitles = [];
-    int page = 1;
-    bool hasMorePages = true;
     
-    while (hasMorePages) {
-      try {
-        // WordPress category pages typically use ?paged=X for pagination
-        final url = page == 1 ? categoryUrl : '$categoryUrl?paged=$page';
-        final response = await http.get(Uri.parse(_getProxiedUrl(url)));
+    try {
+      print('Fetching content from: $categoryUrl');
+      final response = await http.get(Uri.parse(_getProxiedUrl(categoryUrl)));
+      
+      if (response.statusCode != 200) {
+        print('Failed to fetch page: ${response.statusCode}');
+        return urlTitles;
+      }
+      
+      final document = html_parser.parse(response.body);
+      
+      // Find the entry-content div - this is where WordPress puts the main content
+      final entryContent = document.querySelector('.entry-content');
+      
+      if (entryContent == null) {
+        print('No entry-content div found on page');
+        return urlTitles;
+      }
+      
+      // Remove unwanted elements (sharing buttons, like widgets, etc.)
+      // Remove jp-post-flair div which contains sharing buttons
+      final shareButtons = entryContent.querySelectorAll('#jp-post-flair, .sharedaddy, .sd-sharing-enabled, .jetpack-likes-widget-wrapper');
+      for (var element in shareButtons) {
+        element.remove();
+      }
+      
+      // Get all links within entry-content (after removing unwanted elements)
+      final links = entryContent.querySelectorAll('a');
+      print('Found ${links.length} links in entry-content');
+      
+      for (var link in links) {
+        final href = link.attributes['href'];
+        if (href == null || href.isEmpty) continue;
         
-        if (response.statusCode != 200) {
-          break;
+        // Convert relative URL to absolute
+        final absoluteUrl = href.startsWith('http') ? href : '$_baseUrl$href';
+        
+        // Skip sharing/social media URLs
+        if (absoluteUrl.contains('?share=') ||
+            absoluteUrl.contains('&share=') ||
+            absoluteUrl.contains('/share/') ||
+            absoluteUrl.contains('twitter.com') ||
+            absoluteUrl.contains('facebook.com') ||
+            absoluteUrl.contains('widgets.wp.com')) {
+          continue;
         }
         
-        final document = html_parser.parse(response.body);
+        // Skip if it's not from our site or is a duplicate
+        if (!absoluteUrl.contains('tafseerliterate.wordpress.com') ||
+            urlTitles.any((item) => item['url'] == absoluteUrl)) {
+          continue;
+        }
         
-        // Find all post links - look for links that match post URL pattern
-        // Post URLs typically match pattern: /YYYY/MM/DD/post-slug/
-        final postUrlPattern = RegExp(r'/(\d{4})/(\d{2})/(\d{2})/[^/]+/$');
-        final allLinks = document.querySelectorAll('a');
+        // Skip the parent page itself
+        if (absoluteUrl == categoryUrl || absoluteUrl == '$categoryUrl/') {
+          continue;
+        }
         
-        bool foundNewLinks = false;
-        for (var link in allLinks) {
-          final href = link.attributes['href'];
-          if (href != null) {
-            // Convert relative URL to absolute
-            final absoluteUrl = href.startsWith('http') ? href : '$_baseUrl$href';
-            
-            // Check if it's a post URL (matches date pattern) and is from celiktafsir.net
-            final dateMatch = postUrlPattern.firstMatch(absoluteUrl);
-            if (absoluteUrl.contains('tafseerliterate.wordpress.com') && 
-                dateMatch != null &&
-                !urlTitles.any((item) => item['url'] == absoluteUrl) &&
-                !absoluteUrl.contains('/category/') &&
-                !absoluteUrl.contains('/tag/') &&
-                !absoluteUrl.contains('/author/') &&
-                !absoluteUrl.contains('/page/')) {
-              // Get title from link text (actual page title) or fallback to URL extraction
-              String title = link.text.trim();
-              
-              // If link text is empty or too short, try to get from title attribute or extract from URL
-              if (title.isEmpty || title.length < 3) {
-                final titleAttr = link.attributes['title'];
-                if (titleAttr != null && titleAttr.isNotEmpty) {
-                  title = titleAttr.trim();
-                } else {
-                  // Fallback: extract from URL
-                  title = _extractTitleFromUrl(absoluteUrl);
-                }
-              }
-              
-              // Clean up the title - remove extra whitespace and newlines
-              title = title.replaceAll(RegExp(r'\s+'), ' ').trim();
-              
-              urlTitles.add({
-                'url': absoluteUrl,
-                'title': title,
-              });
-              foundNewLinks = true;
-            }
+        // Get title from link text
+        String title = link.text.trim();
+        
+        // If link text is empty, try title attribute or extract from URL
+        if (title.isEmpty) {
+          final titleAttr = link.attributes['title'];
+          if (titleAttr != null && titleAttr.isNotEmpty) {
+            title = titleAttr.trim();
+          } else {
+            title = _extractTitleFromUrl(absoluteUrl);
           }
         }
         
-        // Check if there's a next page link
-        final nextPageLink = document.querySelector('a.next.page-numbers, .nav-next a, .pagination .next a, .pagination-next a');
-        hasMorePages = foundNewLinks && nextPageLink != null;
-        page++;
+        // Clean up the title - remove extra whitespace and newlines
+        title = title.replaceAll(RegExp(r'\s+'), ' ').trim();
         
-        // Safety limit to prevent infinite loops
-        if (page > 100) {
-          print('Warning: Reached page limit for category');
-          break;
+        if (title.isNotEmpty) {
+          urlTitles.add({
+            'url': absoluteUrl,
+            'title': title,
+          });
+          print('Added: $title -> $absoluteUrl');
         }
-        
-        // If no new links found, stop
-        if (!foundNewLinks) {
-          hasMorePages = false;
-        }
-      } catch (e) {
-        print('Error scraping page $page of category: $e');
-        break;
       }
+      
+      print('Total pages found: ${urlTitles.length}');
+    } catch (e) {
+      print('Error scraping surah URLs: $e');
     }
     
-    // Don't sort - preserve the order from the website's HTML
-    // The website already presents pages in the correct order
+    // Return in the order they appear on the page
     return urlTitles;
   }
   
@@ -629,6 +645,13 @@ class GetListSurah {
       print('Scraping URLs and titles for surah $surahNumber from $finalCategoryUrl...');
       final urlTitles = await _scrapeSurahUrls(finalCategoryUrl);
       
+      print('Found ${urlTitles.length} pages for surah $surahNumber');
+      if (urlTitles.isEmpty) {
+        print('WARNING: No pages found for surah $surahNumber at $finalCategoryUrl');
+      } else {
+        print('First page: ${urlTitles.first['title']} - ${urlTitles.first['url']}');
+      }
+      
       return {
         'surahNumber': surahNumber,
         'surahIndex': surahIndex,
@@ -639,6 +662,7 @@ class GetListSurah {
       };
     } catch (e) {
       print('Error scraping surah $surahNumber: $e');
+      print('Stack trace: ${StackTrace.current}');
       return {
         'surahNumber': surahNumber,
         'surahIndex': surahIndex,

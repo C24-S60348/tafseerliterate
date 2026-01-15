@@ -127,6 +127,21 @@ String _getProxiedImageUrl(String imageUrl) {
   return absoluteUrl;
 }
 
+/// Normalize excessive font sizes in inline styles
+String _normalizeFontSizes(String htmlContent) {
+  // Remove or limit excessive font-size percentages (> 150%)
+  // Replace font-size: XXX% where XXX > 150 with font-size: 150%
+  htmlContent = htmlContent.replaceAllMapped(
+    RegExp(r'font-size:\s*([2-9]\d{2,}|1[6-9]\d|15[1-9])%', caseSensitive: false),
+    (match) => 'font-size: 150%', // Cap at 150%
+  );
+  
+  // Also handle font-size with 'xx-large', 'xxx-large', etc.
+  htmlContent = htmlContent.replaceAll(RegExp(r'font-size:\s*x{2,}-large', caseSensitive: false), 'font-size: large');
+  
+  return htmlContent;
+}
+
 /// Process HTML content to proxy all image URLs for web
 String _processHtmlForWeb(String htmlContent) {
   if (!kIsWeb) {
@@ -314,8 +329,10 @@ Future<String?> _getAsalUsulTafsirContent(String url) async {
     'entry-content',
   );
   if (content != null) {
-    // Process HTML content to proxy images for web
-    return _processHtmlForWeb(content);
+    // First normalize excessive font sizes
+    String processedContent = _normalizeFontSizes(content);
+    // Then process HTML content to proxy images for web
+    return _processHtmlForWeb(processedContent);
   }
   return null;
 }
@@ -450,12 +467,36 @@ Widget bodyContent(String url, [bool isDark = false, Color? textColor]) {
                   padding: HtmlPaddings.only(bottom: 8),
                   color: htmlTextColor,
                 ),
-                "h1": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
-                "h2": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
-                "h3": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
-                "h4": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
-                "h5": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
-                "h6": createStyle(color: htmlTextColor, fontWeight: FontWeight.bold),
+                "h1": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.5),
+                ),
+                "h2": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.3),
+                ),
+                "h3": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.2),
+                ),
+                "h4": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 1.1),
+                ),
+                "h5": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize),
+                ),
+                "h6": createStyle(
+                  color: htmlTextColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: FontSize(fontSize * 0.9),
+                ),
                 "img": Style(
                   width: Width(double.infinity),
                   height: Height(200),

@@ -31,16 +31,15 @@ class BacaService {
         final element = document.querySelector('.$className');
 
         if (element != null) {
-          String? elementdata;
-          elementdata = element.innerHtml.substring(
-            0,
-            element.innerHtml.indexOf("Share this"),
-          );
-          if (elementdata == "") {
-            elementdata = element.innerHtml;
-          } else {
-            return elementdata;
+          // Remove unwanted elements (sharing buttons, like widgets, etc.)
+          // Remove jp-post-flair div which contains sharing buttons
+          final shareElements = element.querySelectorAll('#jp-post-flair, .sharedaddy, .sd-sharing-enabled, .jetpack-likes-widget-wrapper');
+          for (var shareElement in shareElements) {
+            shareElement.remove();
           }
+          
+          // Return the cleaned HTML content
+          return element.innerHtml;
         }
       }
     } catch (e) {
