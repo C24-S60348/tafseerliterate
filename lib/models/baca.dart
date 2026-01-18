@@ -156,8 +156,8 @@ Widget Function(ExtensionContext) networkImageExtensionBuilderWithTheme(
                     : null,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   isDark
-                      ? Colors.deepPurple[300]!
-                      : Color.fromARGB(255, 52, 21, 104),
+                      ? const Color(0xFF9CCC65)
+                      : const Color(0xFF7CB342),
                 ),
               ),
             );
@@ -218,7 +218,7 @@ void _showImageZoomDialog(BuildContext context, String imageUrl, bool isDark) {
                                     loadingProgress.expectedTotalBytes!
                               : null,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Color.fromARGB(255, 52, 21, 104),
+                            const Color(0xFF7CB342),
                           ),
                         ),
                       );
@@ -365,8 +365,8 @@ Widget bodyContent(
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
                       isDark
-                          ? Colors.deepPurple[300]!
-                          : Color.fromARGB(255, 52, 21, 104),
+                          ? const Color(0xFF9CCC65)
+                          : const Color(0xFF7CB342),
                     ),
                   ),
                   SizedBox(height: 16),

@@ -95,7 +95,6 @@ class _TadabburPageState extends State<TadabburPage> {
       appBar: AppBar(
         title: Text('Choose Surah', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -137,7 +136,7 @@ class _TadabburPageState extends State<TadabburPage> {
                       ? Center(
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Color.fromARGB(255, 52, 21, 104),
+                              const Color(0xFF7CB342),
                             ),
                           ),
                         )
@@ -223,7 +222,7 @@ class _TadabburPageState extends State<TadabburPage> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
-            borderSide: BorderSide(color: const Color.fromARGB(255, 52, 21, 104), width: 2),
+            borderSide: BorderSide(color: const Color(0xFF7CB342), width: 2),
           ),
         ),
         onChanged: (value) {

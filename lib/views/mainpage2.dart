@@ -82,42 +82,6 @@ class _MainPage2State extends State<MainPage2> {
                       SizedBox(width: screenWidth * 0.04), // Spacing - SAME as mainpage
                       // Hujjah button (top-right, beige) - DISABLED: Not available on tafseerliterate.wordpress.com
                       ElevatedButton(
-                        style: buttonStyle.copyWith(
-                          backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.0)),
-                        ),
-                        onPressed: null, // Disabled
-                        child: Center(
-                          // child: Text(
-                          //   'Coming\nSoon',
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(color: Colors.white60, fontSize: 12),
-                          // ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.015), // Spacing - SAME as mainpage
-                  // Second row - 2 boxes
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Asmaul Husna button (bottom-left, light purple) - DISABLED: Not available on tafseerliterate.wordpress.com
-                      ElevatedButton(
-                        style: buttonStyle.copyWith(
-                          backgroundColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.0)),
-                        ),
-                        onPressed: null, // Disabled
-                        child: Center(
-                          // child: Text(
-                          //   'Coming\nSoon',
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(color: Colors.white60, fontSize: 12),
-                          // ),
-                        ),
-                      ),
-                      SizedBox(width: screenWidth * 0.04), // Spacing - SAME as mainpage
-                      // Asal Usul Tafsir button (bottom-right, brown)
-                      ElevatedButton(
                         style: buttonStyle,
                         onPressed: () {
                           Navigator.of(context).pushNamed('/asal-usul-tafsir');

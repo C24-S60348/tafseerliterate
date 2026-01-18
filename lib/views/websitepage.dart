@@ -45,7 +45,6 @@ class _WebsitePageState extends State<WebsitePage> {
       appBar: AppBar(
         title: Text('Website', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -86,7 +85,7 @@ class _WebsitePageState extends State<WebsitePage> {
                         Icon(
                           Icons.language,
                           size: 64,
-                          color: const Color.fromARGB(255, 52, 21, 104),
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         SizedBox(height: 16),
                         Text(
@@ -94,7 +93,7 @@ class _WebsitePageState extends State<WebsitePage> {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 52, 21, 104),
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                         SizedBox(height: 8),
@@ -122,12 +121,7 @@ class _WebsitePageState extends State<WebsitePage> {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              52,
-                              21,
-                              104,
-                            ),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             padding: EdgeInsets.symmetric(
                               horizontal: 32,
                               vertical: 16,

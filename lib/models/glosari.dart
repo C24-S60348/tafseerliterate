@@ -147,7 +147,7 @@ Widget Function(ExtensionContext) networkImageExtensionBuilderWithTheme(bool isD
                     ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                     : null,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  isDark ? Colors.deepPurple[300]! : Color.fromARGB(255, 52, 21, 104),
+                  isDark ? const Color(0xFF9CCC65) : const Color(0xFF7CB342),
                 ),
               ),
             );
@@ -266,7 +266,7 @@ Future<double> getFontSize() async {
 
 /// Get content for the glossary page
 Future<String?> _getGlosariContent() async {
-  const url = 'https://celiktafsir.net/glosari-blog/';
+  const url = 'https://tafseerliterate.wordpress.com/glossary/';
   final content = await service.BacaService.fetchContentFromUrl(url, 'entry-content');
   if (content != null) {
     // First normalize excessive font sizes
@@ -296,7 +296,7 @@ Widget bodyContent([bool isDark = false, Color? textColor]) {
                 children: [
                   CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      isDark ? Colors.deepPurple[300]! : Color.fromARGB(255, 52, 21, 104),
+                      isDark ? const Color(0xFF9CCC65) : const Color(0xFF7CB342),
                     ),
                   ),
                   SizedBox(height: 16),

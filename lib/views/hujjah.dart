@@ -54,7 +54,6 @@ class _HujjahPageState extends State<HujjahPage> {
       appBar: AppBar(
         title: Text('Hujjah', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -129,7 +128,7 @@ class _HujjahPageState extends State<HujjahPage> {
                           ? Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 52, 21, 104),
+                                  const Color(0xFF7CB342),
                                 ),
                               ),
                             )
@@ -190,7 +189,7 @@ class _HujjahPageState extends State<HujjahPage> {
                                       color: backgroundColor,
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                          backgroundColor: Color.fromARGB(255, 52, 21, 104),
+                                          backgroundColor: const Color(0xFF7CB342),
                                           child: Text(
                                             '${index + 1}',
                                             style: TextStyle(

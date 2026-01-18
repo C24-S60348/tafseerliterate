@@ -162,7 +162,6 @@ class _SurahPagesPageState extends State<SurahPagesPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -245,7 +244,7 @@ class _SurahPagesPageState extends State<SurahPagesPage> {
                           ? Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 52, 21, 104),
+                                  const Color(0xFF7CB342),
                                 ),
                               ),
                             )
@@ -307,7 +306,7 @@ class _SurahPagesPageState extends State<SurahPagesPage> {
                                       color: backgroundColor,
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                          backgroundColor: Color.fromARGB(255, 52, 21, 104),
+                                          backgroundColor: const Color(0xFF7CB342),
                                           child: Text(
                                             '${page['index'] + 1}',
                                             style: TextStyle(

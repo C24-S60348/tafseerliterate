@@ -210,7 +210,6 @@ class _BacaPageState extends State<BacaPage> {
       SnackBar(
         content: Text(message),
         duration: Duration(seconds: 2),
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
       ),
     );
   }
@@ -225,7 +224,6 @@ class _BacaPageState extends State<BacaPage> {
           maxLines: 2,
           style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: Align(
           alignment: Alignment.centerLeft,
           child: IconButton(

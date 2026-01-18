@@ -41,7 +41,6 @@ class _InformationPageState extends State<InformationPage> {
       appBar: AppBar(
         title: Text('Information', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();

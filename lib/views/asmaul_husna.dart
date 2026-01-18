@@ -139,7 +139,6 @@ class _AsmaulHusnaPageState extends State<AsmaulHusnaPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -214,7 +213,7 @@ class _AsmaulHusnaPageState extends State<AsmaulHusnaPage> {
                           ? Center(
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 52, 21, 104),
+                                  const Color(0xFF7CB342),
                                 ),
                               ),
                             )
@@ -275,7 +274,7 @@ class _AsmaulHusnaPageState extends State<AsmaulHusnaPage> {
                                       color: backgroundColor,
                                       child: ListTile(
                                         leading: CircleAvatar(
-                                          backgroundColor: Color.fromARGB(255, 52, 21, 104),
+                                          backgroundColor: const Color(0xFF7CB342),
                                           child: Text(
                                             '${page['index'] + 1}',
                                             style: TextStyle(

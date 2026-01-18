@@ -43,7 +43,7 @@ class _GlosariPageState extends State<GlosariPage> {
               style: TextStyle(color: Colors.white),
             ),
             duration: Duration(seconds: 2),
-            backgroundColor: isDark ? Colors.grey[850] : Color.fromARGB(255, 52, 21, 104),
+            backgroundColor: isDark ? Colors.grey[850] : const Color(0xFF7CB342),
           ),
         );
       }
@@ -91,7 +91,6 @@ class _GlosariPageState extends State<GlosariPage> {
       appBar: AppBar(
         title: Text('Glossary', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -184,7 +183,7 @@ class _GlosariPageState extends State<GlosariPage> {
         // Glosari header
         Center(
           child: Text(
-            'Glosari',
+            'Glossary',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,

@@ -37,12 +37,12 @@ class ThemeHelper {
     return ThemeData(
       brightness: Brightness.light,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
+        seedColor: const Color(0xFF7CB342), // Light green
         brightness: Brightness.light,
       ),
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
+        backgroundColor: const Color(0xFF7CB342), // Light green
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -55,12 +55,12 @@ class ThemeHelper {
     return ThemeData(
       brightness: Brightness.dark,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
+        seedColor: const Color(0xFF558B2F), // Darker green for dark mode
         brightness: Brightness.dark,
       ),
       scaffoldBackgroundColor: const Color(0xFF121212),
       appBarTheme: AppBarTheme(
-        backgroundColor: const Color(0xFF1E1E1E),
+        backgroundColor: const Color(0xFF2E2E2E), // Slightly lighter than background
         foregroundColor: Colors.white,
         elevation: 0,
       ),

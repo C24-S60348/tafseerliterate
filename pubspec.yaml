@@ -70,7 +70,7 @@ flutter_launcher_icons:
     generate: true
     image_path: "assets/images/logo.png"
     background_color: "#ffffff"
-    theme_color: "#340068"
+    theme_color: "#7CB342"
 
 # The following section is specific to Flutter packages.
 flutter:

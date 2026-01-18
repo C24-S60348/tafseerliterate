@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 class GetAsalUsulTafsir {
   static const String _baseUrl = 'https://tafseerliterate.wordpress.com';
-  static const String _categoryUrl = 'https://tafseerliterate.wordpress.com/usul-tafsir/';
+  static const String _categoryUrl = 'https://tafseerliterate.wordpress.com/usul-tafseer/';
   
   // CORS Proxy for Web - using custom proxy server
   static const String _corsProxy = 'https://afwanhaziq.vps.webdock.cloud/proxy?url=';

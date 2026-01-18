@@ -52,7 +52,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
         SnackBar(
           content: Text('Bookmark removed'),
           duration: Duration(seconds: 2),
-          backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         ),
       );
     } catch (e) {
@@ -101,7 +100,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
       appBar: AppBar(
         title: Text('Bookmarks', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 52, 21, 104),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -134,7 +132,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
                     ? Center(
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            const Color.fromARGB(255, 52, 21, 104),
+                            const Color(0xFF7CB342),
                           ),
                         ),
                       )
@@ -234,7 +232,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
                                                         style: TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.bold,
-                                                          color: isDark ? Colors.white : const Color.fromARGB(255, 52, 21, 104),
+                                                          color: isDark ? Colors.white : const Color(0xFF7CB342),
                                                         ),
                                                       ),
                                                       SizedBox(height: 4),

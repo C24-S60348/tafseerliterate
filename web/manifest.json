@@ -1,11 +1,11 @@
 {
-    "name": "Celik Tafsir",
-    "short_name": "Celik Tafsir",
+    "name": "Tafseer Literate",
+    "short_name": "Tafseer Literate",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#340068",
-    "description": "Celik Tafsir",
+    "theme_color": "#7CB342",
+    "description": "Tafseer Literate - Understanding the Quran with Ease",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
